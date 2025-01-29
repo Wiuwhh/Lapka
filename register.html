@@ -4,6 +4,70 @@
     <meta charset="UTF-8">
     <title>ЛАПКА | Регистрация</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500&display=swap" rel="stylesheet">
+    <style>
+        /* Общие стили для формы */
+        body {
+            font-family: 'Montserrat Alternates', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #registerForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        #registerForm h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #registerForm label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        #registerForm input {
+            width: 93%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Стили для кнопок */
+        .register-button,
+        .login-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 3px solid #8E96A1;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #8E96A1;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .register-button:hover,
+        .login-button:hover {
+            background-color: #4a4a5a;
+            border-color: #4a4a5a;
+        }
+    </style>
 </head>
 <body>
     <form id="registerForm" method="post" action="server/register.php">
@@ -11,17 +75,19 @@
 
         <label for="username">Имя пользователя:</label>
         <input type="text" id="username" name="username" required>
-        <br><br>
+        <br>
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
-        <br><br>
+        <br>
         <label for="phone">Телефон:</label>
         <input type="phone" id="phone" name="phone" required>
-        <br><br>
+        <br>
         <label for="password">Пароль:</label>
         <input type="password" id="password" name="password" required>
         <br><br>
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit" class="register-button">Зарегистрироваться</button>
+        <br><br>
+        <button type="button" onclick="window.history.back()" class="login-button">Назад</button>
     </form>
 </body>
 </html>

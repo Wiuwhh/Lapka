@@ -101,6 +101,12 @@ a {
     transition: all 0.3s ease;
 }
 
+.nav-use:hover, .nav-use:focus {
+    background-color: #4a4a5a;
+    color: #ffffff;
+    border-color: #4a4a5a;
+}
+
 .colorful-container {
     background-color: #8E96A1;
     border-radius: 30px;
@@ -224,7 +230,6 @@ a {
     .nav-use {
         font-size: 1.2rem;
         padding-bottom: 8px;
-        text-decoration: underline;
     }
 
     .main-first {
