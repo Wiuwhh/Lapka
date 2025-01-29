@@ -1,0 +1,240 @@
+body {
+    font-family: "Montserrat Alternates", serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    margin: 1% 9% 1% 9%;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.logo {
+    font-size: 2rem;
+    color: #4a4a5a;
+    margin: 0;
+}
+
+.logo span {
+    color: #adadad;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.register-button,
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 3px solid #8E96A1;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #8E96A1;
+    text-align: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.register-button:hover,
+.login-button:hover {
+    background-color: #4a4a5a;
+    border-color: #4a4a5a;
+}
+
+a {
+    text-decoration: none;
+    background-color: #fff;
+    color: #8E96A1;
+    padding: 8px 12px;
+    border-radius: 50px;
+}
+
+/* Контейнер для кнопок */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 1% 6% 1% 6%;;
+    padding: 10px; /* Добавлен отступ */
+    max-width: 90%; /* Ограничиваем ширину */
+    background-color: #8E96A1;
+    border-radius: 30px;
+}
+
+/* Кнопки */
+.nav-link {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #8E96A1;
+    font-size: 1.5rem;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #adadad;
+    color: #4a4a5a;
+}
+
+.nav-use {
+    flex: 1;
+    border: 5px solid #4a4a5a;
+    text-align: center;
+    text-decoration: none;
+    color: #4a4a5a;
+    font-size: 1.5rem; 
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.colorful-container {
+    background-color: #8E96A1;
+    border-radius: 30px;
+    padding: 10px 0;
+}
+
+.h1-title-page {
+    text-align: center;
+}
+
+.main {
+    background-color: #fff;
+    border-radius: 25px;
+    margin: 0% 6% 4% 6%;
+    font-size: 1.2rem;
+    color: #4a4a5a;
+}
+
+.content {
+    padding: 10px;
+    color: #4a4a5a;
+    margin: 0 5%;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.donate {
+    text-align: center; 
+}
+
+.donate img {
+    max-width: 100%;
+    height: auto; 
+    width: 200px; 
+    border: 10px solid rgb(255, 255, 255);
+    border-radius: 20%;
+}
+
+.donate-link {
+    text-decoration: underline; 
+}
+
+.pets_homepage-img {
+    float: right; /* Обтекание справа */
+    margin: 10px; /* Отступы вокруг изображения */
+    max-width: 400px;
+    height: auto;
+    border-radius: 25px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Убедимся, что модальное окно поверх всего */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content button#confirm-logout {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.modal-content button#cancel-logout {
+    background-color: #ccc;
+    color: black;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        margin: 1% 5%;
+    }
+
+    .header-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .auth-buttons {
+        justify-content: center;
+    }
+
+    .nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-link {
+        font-size: 1.2rem;
+        padding: 8px;
+        
+    }
+
+    .nav-use {
+        font-size: 1.2rem;
+        padding-bottom: 8px;
+        text-decoration: underline;
+    }
+
+    .main-first {
+        margin: 0% 5% 4% 5%;
+        font-size: 1rem;
+    }
+
+    .content {
+        margin: 0 3%;
+        font-size: 0.9rem;
+    }
+}
+
