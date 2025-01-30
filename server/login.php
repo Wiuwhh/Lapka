@@ -10,7 +10,7 @@ $conn = new mysqli($servername, $username, $password, $dbname, 3307);
 
 // Проверка подключения
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die(json_encode(['success' => false, 'message' => 'Ошибка подключения к базе данных']));
 }
 
 // Установка кодировки
@@ -28,13 +28,12 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     if (password_verify($password, $row['password'])) {
         $_SESSION['user'] = $row;
-        header("Location: ../index.html"); // Перенаправление на главную страницу
-        exit();
+        echo json_encode(['success' => true]); // Успешная авторизация
     } else {
-        echo "Неверный пароль!";
+        echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']); // Ошибка пароля
     }
 } else {
-    echo "Пользователь не найден!";
+    echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']); // Пользователь не найден
 }
 
 $conn->close();

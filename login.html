@@ -1,22 +1,129 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <title>ЛАПКА | Вход</title>
-        <link rel="stylesheet" href="css/styles.css">
-    </head>
-    <body>
-        <form id="loginForm" method="post" action="server/login.php">
-            <h2>Вход</h2>
+<head>
+    <meta charset="UTF-8">
+    <title>ЛАПКА | Вход</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Rubik+Spray+Paint&display=swap" rel="stylesheet"> 
+    <style>
+        /* Общие стили для формы */
+        body {
+            font-family: 'Montserrat Alternates', sans-serif;
+            background-color: #D9CBA2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #loginForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgb(86, 73, 57);
+            width: 300px;
+            text-align: center;
+        }
+
+        #loginForm h2 {
+            margin-bottom: 20px;
+            color: #786C5F;
+        }
+
+        #loginForm label {
+            display: block;
+            margin-bottom: 5px;
+            color: #786C5F;
+        }
+
+        #loginForm input {
+            width: 93%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Стили для кнопок */
+        .login-button,
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 3px solid #9F8B70;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #9F8B70;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .login-button:hover,
+        .back-button:hover {
+            background-color: #786C5F;
+            border-color: #786C5F;
+        }
+
+        /* Стили для блока ошибки */
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            display: none; /* По умолчанию скрыт */
+        }
+    </style>
+</head>
+<body>
+    <form id="loginForm" method="post" action="server/login.php">
+        <h2>Вход</h2>
+
+        <!-- Блок для отображения ошибки -->
+        <div id="errorMessage" class="error-message"></div>
+
+        <label for="username">Имя пользователя:</label>
+        <input type="text" id="username" name="username" required>
+        <br><br>
         
-            <label for="username">Имя пользователя:</label>
-            <input type="text" id="username" name="username" required>
-            <br><br>
-            
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" required>
-            <br><br>
-            <button type="submit">Войти</button>
-        </form>        
-    </body>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
+        <br><br>
+        <button type="submit" class="login-button">Войти</button>
+        <button type="button" onclick="window.history.back()" class="back-button">Назад</button>
+    </form>
+
+    <script>
+        // Обработка отправки формы
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Отменяем стандартную отправку формы
+
+            // Собираем данные формы
+            const formData = new FormData(this);
+
+            // Отправляем данные на сервер
+            fetch('server/login.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Если успешно, перенаправляем на главную страницу
+                    window.location.href = 'index.html';
+                } else {
+                    // Если ошибка, отображаем её
+                    document.getElementById('errorMessage').textContent = data.message;
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+    </script>
+</body>
 </html>

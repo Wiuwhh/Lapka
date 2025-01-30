@@ -1,29 +1,40 @@
+                                                            /* Общие стили для всей страницы */
 body {
-    font-family: "Montserrat Alternates", serif;
-    margin: 0;
+    font-family: "Comfortaa", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 1% 9%;
     padding: 0;
-    background-color: #ffffff;
-    margin: 1% 9% 1% 9%;
+    background-color: #ddd1ad;
 }
 
+                                                            /* Шапка сайта */
 .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: #ddd1ad;
 }
 
-.logo {
-    font-size: 2rem;
-    color: #4a4a5a;
+
+.logo, .logo-button {
+    font-family: "Rubik Spray Paint", serif;
+    font-weight: 400;
+    font-size: 3rem;
+    color: #786C5F;
     margin: 0;
+    text-decoration: none;
 }
 
 .logo span {
-    color: #adadad;
+    font-family: "Comfortaa", serif;
+    font-weight: 400;
+    font-size: 2rem;
+    color: #9F8B70;
 }
 
+                                                            /* Кнопки авторизации */
 .auth-buttons {
     display: flex;
     gap: 15px;
@@ -34,11 +45,11 @@ body {
     display: inline-block;
     padding: 10px 20px;
     font-size: 1rem;
-    border: 3px solid #8E96A1;
+    border: 3px solid #9F8B70;
     border-radius: 30px;
     text-decoration: none;
     color: #fff;
-    background-color: #8E96A1;
+    background-color: #9F8B70;
     text-align: center;
     transition: all 0.3s ease;
     flex-shrink: 0;
@@ -46,36 +57,29 @@ body {
 
 .register-button:hover,
 .login-button:hover {
-    background-color: #4a4a5a;
-    border-color: #4a4a5a;
+    background-color: #786C5F;
+    border-color: #786C5F;
 }
 
-a {
-    text-decoration: none;
-    background-color: #fff;
-    color: #8E96A1;
-    padding: 8px 12px;
-    border-radius: 50px;
-}
-
-/* Контейнер для кнопок */
+                                                           /* Навигация */
+                                                           /* Контейнер для кнопок */
 .nav {
     display: flex;
     justify-content: space-between;
     gap: 15px;
     margin: 1% 6% 1% 6%;;
-    padding: 10px; /* Добавлен отступ */
+    padding: 0px; /* Добавлен отступ */
     max-width: 90%; /* Ограничиваем ширину */
-    background-color: #8E96A1;
+    background-color: #91775A;
     border-radius: 30px;
 }
 
-/* Кнопки */
+                                                           /* Кнопки */
 .nav-link {
     flex: 1;
     text-align: center;
     text-decoration: none;
-    color: #8E96A1;
+    color: #91775A;
     font-size: 1.5rem;
     padding: 10px;
     background-color: #ffffff;
@@ -84,79 +88,197 @@ a {
 }
 
 .nav-link:hover {
-    background-color: #adadad;
-    color: #4a4a5a;
+    background-color: #9F8B70;
+    color: #fff;
 }
 
 .nav-use {
     flex: 1;
-    border: 5px solid #4a4a5a;
     text-align: center;
     text-decoration: none;
-    color: #4a4a5a;
-    font-size: 1.5rem; 
+    color: #786C5F;
+    font-size: 1.5rem;
     padding: 10px;
     background-color: #ffffff;
-    border-radius: 30px;
+    border-radius: 30px 30px 0 0;
     transition: all 0.3s ease;
+    margin-bottom: -15px;
 }
 
-.nav-use:hover, .nav-use:focus {
-    background-color: #4a4a5a;
-    color: #ffffff;
-    border-color: #4a4a5a;
+                                                            /* Основной контент */
+.main {
+    background-color: #fff;
+    border-radius: 25px;
+    margin: 10px 6% 10px;
+    font-size: 1.2rem;
+    color: #786C5F;
 }
 
-.colorful-container {
-    background-color: #8E96A1;
-    border-radius: 30px;
-    padding: 10px 0;
+.main-first-page {
+    background-color: #fff;
+    border-radius: 0px 25px 25px 25px;
+    margin: 0% 6% 4% 6%;
+    font-size: 1.2rem;
+    color: #786C5F;
+}
+
+.main-last-page {
+    background-color: #fff;
+    border-radius: 25px 0px 25px 25px;
+    margin: 0% 6% 4% 6%;
+    font-size: 1.2rem;
+    color: #786C5F;
+}
+
+.content {
+    padding: 10px;
+    color: #786C5F;
+    margin: 0 5%;
+    line-height: 1.6;
+    font-size: 1rem;
 }
 
 .h1-title-page {
     text-align: center;
 }
 
-.main {
-    background-color: #fff;
-    border-radius: 25px;
-    margin: 0% 6% 4% 6%;
-    font-size: 1.2rem;
-    color: #4a4a5a;
+.a {
+    text-decoration: none;
+    background-color: #9F8B70;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 50px;
 }
 
-.content {
-    padding: 10px;
-    color: #4a4a5a;
-    margin: 0 5%;
-    line-height: 1.6;
+.colorful-container {
+    background-color: #91775A;
+    border-radius: 30px;
+    padding: 10px 0;
+    box-shadow: 0 0 10px rgb(86, 73, 57);
+}
+
+.upper-part {
+    text-align: center;
+}
+
+.donate-button, 
+.pets-button {
+    display: inline-block;
+    padding: 10px 20px;
     font-size: 1rem;
+    border: 3px solid #9F8B70;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #9F8B70;
+    text-align: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    margin-bottom: 10px;
 }
 
-.donate {
-    text-align: center; 
+.donate-button:hover, 
+.pets-button:hover {
+    background-color: #786C5F;
+    border-color: #786C5F;
+}
+
+.container {
+    max-width: 1200px; /* Увеличиваем максимальную ширину для лучшего отображения */
+    margin: 0 auto;
+    margin-top: 10px;
+    display: flex; /* Добавляем Flexbox */
+    justify-content: space-between; /* Распределяем элементы по горизонтали */
+    text-align: center;
+    gap: 20px; /* Добавляем отступ между элементами */
+}
+
+.section {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+                                                            /* Карта */
+.container-map {
+    margin-top: -30px;
+    margin-bottom: 25px;
+}
+
+.map {
+    width: 800px;
+    height: 400px;
+    margin: 0 auto;
+    border: 10px solid #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.map-text {
+    text-align: center;
+    color: #fff;
+}
+
+                                                            /* Изображения */
+.pets_homepage-img {
+    float: right;
+    max-width: 315px;
+    height: auto;
+    border-radius: 120px 20px;
+    margin-bottom: 5%;
+}
+
+.banner-index {
+    margin-bottom: 30px;
+    margin-top: 15px;
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Растягивает изображение по размеру контейнера, сохраняя пропорции */
+    border-radius: 200px 20px;
+}
+
+
+
+.pets img {
+    max-width: 100%;
+    height: auto;
+    width: 200px;
+    border: 10px solid #ffffff;
+    border-radius: 20%;
+}
+
+.pets {
+    text-align: center;
 }
 
 .donate img {
     max-width: 100%;
-    height: auto; 
-    width: 200px; 
-    border: 10px solid rgb(255, 255, 255);
+    height: auto;
+    width: 200px;
+    border: 10px solid #ffffff;
     border-radius: 20%;
+}   
+
+.donate {
+    text-align: center;
 }
 
 .donate-link {
-    text-decoration: underline; 
+    font-size: 1.2rem; /* Размер шрифта по умолчанию */
+    color: #786C5F; /* Цвет текста */
+    text-decoration: underline; /* Подчеркивание */
+    word-break: break-all; /* Перенос длинных ссылок */
 }
 
-.pets_homepage-img {
-    float: right; /* Обтекание справа */
-    margin: 10px; /* Отступы вокруг изображения */
-    max-width: 400px;
-    height: auto;
-    border-radius: 25px;
-}
 
+                                                            /* Модальное окно */
 .modal {
     display: none;
     position: fixed;
@@ -164,10 +286,10 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Убедимся, что модальное окно поверх всего */
+    z-index: 1000;
 }
 
 .modal-content {
@@ -187,7 +309,7 @@ a {
 }
 
 .modal-content button#confirm-logout {
-    background-color: #ff4d4d;
+    background-color: #786C5F;
     color: white;
 }
 
@@ -196,7 +318,59 @@ a {
     color: black;
 }
 
-/* Адаптивность */
+                                                            /*Footer КОНТАКТЫ*/
+.footer {
+    display: flex;
+    flex-wrap: wrap; /* Разрешаем перенос строк */
+    justify-content: space-between; /* Распределяем пространство между блоками */
+    align-items: center; /* Выравниваем элементы по центру */
+    padding: 0px 20px;
+    background-color: #ddd1ad;
+    border-top: 1px solid #ddd1ad;
+    margin-top: 15px;
+}
+
+.left-section {
+    text-align: left; /* Выравниваем текст слева */
+}
+
+.right-section {
+    display: flex;
+    gap: 20px; /* Расстояние между элементами */
+    align-items: center; /* Выравниваем элементы по центру */
+}
+
+.footer-text {
+    width: 100%; /* Занимает всю ширину */
+    text-align: center; /* Выравниваем текст по центру */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.vk, .tg {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Выравниваем иконку и текст по центру */
+    text-decoration: none;
+    color: #333;
+    background: none;
+}
+
+.vk img, .tg img {
+    width: 24px; /* Размер иконок */
+    height: 24px;
+    margin-bottom: 5px; /* Отступ между иконкой и текстом */
+}
+
+
+
+
+
+
+
+
+
+
+                                                            /* Адаптивность */
 @media (max-width: 768px) {
     body {
         margin: 1% 5%;
@@ -230,16 +404,138 @@ a {
     .nav-use {
         font-size: 1.2rem;
         padding-bottom: 8px;
+        border: 5px solid #786C5F;
+        border-radius: 30px;
+        margin-bottom: 0px;
     }
 
-    .main-first {
-        margin: 0% 5% 4% 5%;
-        font-size: 1rem;
-    }
+    .main-first-page, 
+    .main-last-page, main {
+        margin: 10px 6% 10px;
+        border-radius: 20px;     }   
 
     .content {
         margin: 0 3%;
         font-size: 0.9rem;
+    }
+
+    .nav-use:hover, .nav-use:focus {
+        background-color: #786C5F;
+        color: #ffffff;
+        border-color: #786C5F;
+    }
+
+    .container {
+        flex-direction: column; /* Меняем направление на вертикальное */
+        gap: 10px; /* Уменьшаем отступы между элементами */
+    }
+
+    .section {
+        margin: 10px 0; /* Уменьшаем отступы */
+    }
+
+    .banner-index {
+        border-radius: 20px; /* Упрощаем скругления */
+    }
+
+    .footer {
+        flex-direction: column; /* Меняем направление на вертикальное */
+        text-align: center; /* Центрируем текст */
+    }
+
+    .left-section,
+    .right-section {
+        text-align: center; /* Центрируем текст */
+        margin-bottom: 15px;
+    }
+
+    .footer-text {
+        margin-top: 10px; /* Уменьшаем отступ сверху */
+    }
+
+    .pets_homepage-img {
+        display: none; /* Изображение исчезает */
+    }
+
+
+    .container-map {
+        margin: 20px 0; /* Уменьшаем отступы */
+    }
+
+    .map {
+        width: 400px; /* Делаем карту адаптивной */
+        height: 200px; /* Уменьшаем высоту карты */
+    }
+
+    .donate-link {
+        font-size: 1rem; /* Уменьшаем размер шрифта */
+        padding: 10px; /* Добавляем отступы */
+        background-color: #f9f9f9; /* Легкий фон для выделения */
+        border-radius: 5px; /* Закругляем углы */
+        display: inline-block; /* Делаем блок кликабельным */
+        margin: 10px 0; /* Отступы сверху и снизу */
+    }
+
+    
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.5rem; /* Уменьшаем размер логотипа */
+    }
+
+    .logo span {
+        font-size: 1.2rem; /* Уменьшаем размер шрифта */
+    }
+
+    .register-button,
+    .login-button {
+        font-size: 0.9rem; /* Уменьшаем размер шрифта */
+        padding: 8px 16px; /* Уменьшаем отступы внутри кнопок */
+    }
+
+    .nav-link, .nav-use {
+        font-size: 1rem; /* Уменьшаем размер шрифта */
+    }
+
+    .h1-title-page {
+        font-size: 1.5rem; /* Уменьшаем размер заголовка */
+    }
+
+    .content h2 {
+        font-size: 1.2rem; /* Уменьшаем размер заголовков */
+    }
+
+    .content p {
+        font-size: 0.9rem; /* Уменьшаем размер текста */
+    }
+
+    .map {
+        width: 300px;
+        height: 150px; /* Уменьшаем высоту карты */
+    }
+
+    .donate-button,
+    .pets-button {
+        font-size: 0.9rem; /* Уменьшаем размер шрифта */
+        padding: 8px 16px; /* Уменьшаем отступы внутри кнопок */
+        margin-bottom: 10px;
+    }
+
+    .section h3 {
+        font-size: 1.2rem; /* Уменьшаем размер заголовков */
+    }
+
+    .section p {
+        font-size: 0.9rem; /* Уменьшаем размер текста */
+    }
+
+    .banner-index {
+        border-radius: 10px; /* Упрощаем скругления */
+    }
+
+    .footer-text {
+        font-size: 0.9rem; /* Уменьшаем размер текста */
     }
 }
 
