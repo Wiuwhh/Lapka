@@ -18,6 +18,7 @@ $totalPets = $pdo->query("SELECT COUNT(*) FROM pets")->fetchColumn();
 $totalProducts = $pdo->query("SELECT COUNT(*) FROM shop_products")->fetchColumn();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>

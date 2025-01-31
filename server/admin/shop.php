@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role
     exit();
 }
 
+
 // Получаем список товаров
 $products = $pdo->query("SELECT * FROM shop_products ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
 

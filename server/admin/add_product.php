@@ -68,6 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
 
+
     <h1>Добавить товар</h1>
 
     <form method="POST">

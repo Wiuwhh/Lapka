@@ -85,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </style>
 </head>
 <body>
+    
 
     <h1>Редактировать питомца</h1>
 
