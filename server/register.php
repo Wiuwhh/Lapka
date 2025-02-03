@@ -21,13 +21,15 @@ $phone = $_POST['phone'];
 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 // Запрос на вставку данных
-$sql = "INSERT INTO users (username, email, phone, password) VALUES ('$username', '$email', '$phone', '$password')";
+$stmt = $conn->prepare("INSERT INTO users (username, email, phone, password) VALUES (?, ?, ?, ?)");
+$stmt->bind_param("ssss", $username, $email, $phone, $password);
 
-if ($conn->query($sql) === TRUE) {
-    echo "Регистрация успешна!";
+if ($stmt->execute()) {
+    echo json_encode(['success' => true, 'message' => 'Регистрация успешна!']);
 } else {
-    echo "Ошибка: " . $sql . "<br>" . $conn->error;
+    echo json_encode(['success' => false, 'message' => 'Ошибка при регистрации.']);
 }
 
+$stmt->close();
 $conn->close();
 ?>
