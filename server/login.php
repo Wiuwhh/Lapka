@@ -21,19 +21,21 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 
 // Запрос на получение данных пользователя
-$sql = "SELECT * FROM users WHERE username = '$username'";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     if (password_verify($password, $row['password'])) {
         $_SESSION['user'] = $row;
-        echo json_encode(['success' => true]); // Успешная авторизация
+        echo json_encode(['success' => true]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']); // Ошибка пароля
+        echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']); // Пользователь не найден
+    echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']);
 }
 
 $conn->close();
