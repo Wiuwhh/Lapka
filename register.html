@@ -139,28 +139,28 @@
     <script>
         // Функция для перенаправления на главную страницу
         function redirectToHome() {
+            document.getElementById('successModal').style.display = 'none';
             window.location.href = 'index.html';
         }
 
-        // Обработка отправки формы
         document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Предотвращаем стандартную отправку формы
-
-            // Отправляем данные формы через Fetch API
+            event.preventDefault();
             fetch('server/register.php', {
                 method: 'POST',
                 body: new FormData(this)
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                if (data === "Регистрация успешна!") {
-                    // Показываем модальное окно
+                if (data.success) {
                     document.getElementById('successModal').style.display = 'flex';
                 } else {
-                    alert(data); // Показываем сообщение об ошибке
+                    alert(data.message || 'Произошла ошибка при регистрации');
                 }
             })
-            .catch(error => console.error('Ошибка:', error));
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке данных. Пожалуйста, попробуйте еще раз.');
+            });
         });
     </script>
 </body>

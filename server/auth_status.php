@@ -7,10 +7,11 @@ if (isset($_SESSION['user'])) {
     echo json_encode([
         'authenticated' => true,
         'username' => $_SESSION['user']['username'],
-        'role' => $_SESSION['user']['role'] ?? 'user', // Пример дополнительных данных
+        'role' => $_SESSION['user']['role'] ?? 'user', // Добавляем роль пользователя
     ]);
 } else {
     echo json_encode(['authenticated' => false]);
 }
 
 exit();
+?>

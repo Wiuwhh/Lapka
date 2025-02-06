@@ -29,8 +29,15 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     if (password_verify($password, $row['password'])) {
+        // Сохраняем данные пользователя в сессии
         $_SESSION['user'] = $row;
-        echo json_encode(['success' => true]);
+
+        // Проверяем роль пользователя
+        if ($row['role'] === 'admin') {
+            echo json_encode(['success' => true, 'redirect' => 'admin_panel.html']); // Перенаправляем на админ-панель
+        } else {
+            echo json_encode(['success' => true, 'redirect' => 'index.html']); // Перенаправляем на главную страницу
+        }
     } else {
         echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']);
     }
