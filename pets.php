@@ -176,6 +176,7 @@ $conn->close();
                                 <div class="name-age">
                                     <h3>' . $row['name'] . ', ' . $row['age'] . '</h3>
                                 </div>
+                                <p>' . 'Порода: ' . $row['breed'] . '</p>
                                 <p>' . $row['description'] . '</p>
                                 <div class="category">' . $row['category_name'] . '</div>
                             </div>';

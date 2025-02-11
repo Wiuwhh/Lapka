@@ -146,6 +146,115 @@ $conn->close();
             text-align: center;
             font-size: 20px;
         }
+
+        /* Стили для модального окна */
+        .modal {
+            display: none; /* Скрыто по умолчанию */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto; /* Центрирование по горизонтали */
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 70%; /* Ширина модального окна */
+            max-width: 800px; /* Максимальная ширина */
+            position: relative;
+            top: 50%; /* Сдвигаем на 50% вниз */
+            transform: translateY(-50%); /* Возвращаем на половину высоты вверх */
+        }
+
+        .modal-body {
+            display: flex; /* Используем flexbox для расположения фото и текста */
+            gap: 20px; /* Расстояние между фото и текстом */
+        }
+
+        .modal-image {
+            flex: 1; /* Фото занимает 1 часть */
+        }
+
+        .modal-image img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .modal-text {
+            flex: 2; /* Текст занимает 2 части */
+            text-align: left; /* Выравнивание текста по левому краю */
+        }
+
+        .modal-text h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .modal-text p {
+            font-size: 1rem;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .modal-text button {
+            padding: 10px 20px;
+            background-color: #9F8B70;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-text button:hover {
+            background-color: #786C5F;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+        .modal-content {
+            width: 90%; /* Увеличиваем ширину на мобильных устройствах */
+            max-width: none; /* Убираем ограничение по ширине */
+        }
+
+        .modal-body {
+            flex-direction: column; /* Располагаем фото и текст вертикально */
+        }
+
+        .modal-image {
+            text-align: center; /* Центрируем фото */
+        }
+
+        .modal-image img {
+            max-width: 80%; /* Уменьшаем размер фото */
+        }
+
+        .modal-text {
+            text-align: center; /* Центрируем текст */
+        }
+    }
     </style>
 </head>
 <body>
@@ -205,12 +314,11 @@ $conn->close();
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo '
-                            <div class="product-card">
+                            <div class="product-card" data-product=\'' . json_encode($row) . '\'>
                                 <img src="' . $row['photo_path'] . '" alt="' . $row['name'] . '">
                                 <h3>' . $row['name'] . '</h3>
-                                <p>' . $row['description'] . '</p>
                                 <div class="price">' . number_format($row['price'], 2) . ' руб.</div>
-                                <button>Добавить в корзину</button>
+                                <p style="display: none;">' . $row['category_name'] . '</p>
                             </div>';
                         }
                     } else {
@@ -250,8 +358,74 @@ $conn->close();
             <button id="cancel-logout">Нет</button>
         </div>
     </div>
+    
+    <!-- Модальное окно для деталей товара -->
+    <div id="productModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modalImage" src="" alt="Фото товара">
+                </div>
+                <div class="modal-text">
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalDescription"></p>
+                    <p id="modalPrice"></p>
+                    <p id="modalCategory"></p>
+                    <!-- 
+                    <button onclick="addToCart()">Добавить в корзину</button>
+                     -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="js/auth.js"></script>
+    <script>
+        // Функция для открытия модального окна с деталями товара
+        function openModal(product) {
+            document.getElementById('modalImage').src = product.photo_path;
+            document.getElementById('modalTitle').innerText = product.name;
+            document.getElementById('modalDescription').innerText = product.description;
+            document.getElementById('modalPrice').innerText = `Цена: ${parseFloat(product.price).toFixed(2)} руб.`;
+            document.getElementById('modalCategory').innerText = `Категория: ${product.category_name}`;
+            document.getElementById('productModal').style.display = 'block';
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        // Закрытие модального окна при клике на крестик
+        document.querySelector('.close').addEventListener('click', closeModal);
+
+        // Закрытие модального окна при клике вне его
+        window.addEventListener('click', function(event) {
+            if (event.target == document.getElementById('productModal')) {
+                closeModal();
+            }
+        });
+
+        // Обработчик клика на карточку товара
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const productData = this.getAttribute('data-product');
+                if (productData) {
+                    const product = JSON.parse(productData);
+                    openModal(product);
+                }
+            });
+        });
+
+        // Функция для добавления товара в корзину (заглушка)
+        /*
+        function addToCart() {
+            alert('Товар добавлен в корзину!');
+            closeModal();
+        }
+        */
+    </script>
 </body>
 </html>
 
