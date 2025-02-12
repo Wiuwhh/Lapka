@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Rubik+Spray+Paint&display=swap" rel="stylesheet">
+    <title>ЛАПКА | Пожелания</title>
+    <style>
+        /* Основной контент */
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Контейнер для заголовка и кнопки "Назад" */
+        .title-container {
+            display: flex;
+            justify-content: center; /* Центрируем заголовок */
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            position: relative; /* Для позиционирования кнопки "Назад" */
+        }
+
+        .title-container h1 {
+            margin: 0;
+            text-align: center; /* Центрируем текст заголовка */
+        }
+
+        /* Кнопка "Назад" */
+        .back-button {
+            position: absolute; /* Абсолютное позиционирование */
+            right: 0; /* Размещаем справа */
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 3px solid #9F8B70;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #9F8B70;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #786C5F;
+            border-color: #786C5F;
+        }
+
+        /* Форма */
+        #suggestionsForm {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        #suggestionsForm label {
+            display: block;
+            margin-bottom: 5px;
+            color: #786C5F;
+            text-align: left;
+        }
+
+        #suggestionsForm input,
+        #suggestionsForm textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Comfortaa', sans-serif;
+        }
+
+        #suggestionsForm textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        #suggestionsForm button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 3px solid #9F8B70;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #9F8B70;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        #suggestionsForm button:hover {
+            background-color: #786C5F;
+            border-color: #786C5F;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #9F8B70;
+            color: white;
+        }
+
+        .modal-content button:hover {
+            background-color: #786C5F;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo-button">
+                <h1 class="logo">ЛАПКА <span>| Приют для животных</span></h1>
+            </a>
+            <div class="auth-buttons">
+                <a href="register.html" class="register-button" id="register-btn">Регистрация</a>
+                <a href="login.html" class="login-button" id="login-btn">Вход</a>
+                <a href="#" id="account-icon" style="display: none;" class="a">👤</a>
+                <a href="#" style="display: none;" class="a" id="logout-btn">Выйти</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <div class="colorful-container">
+        <main class="main">
+            <div class="content">
+                <!-- Заголовок и кнопка "Назад" -->
+                <div class="title-container">
+                    <h1>Оставьте ваше пожелание</h1>
+                    <a href="index.html" class="back-button">Назад</a>
+                </div>
+
+                <!-- Форма для пожеланий -->
+                <form id="suggestionsForm">
+                    <!-- Блок для отображения ошибки -->
+                    <div id="errorMessage" class="error-message"></div>
+
+                    <label for="title">Заголовок:</label>
+                    <input type="text" id="title" name="title" required>
+
+                    <label for="description">Описание:</label>
+                    <textarea id="description" name="description" required></textarea>
+
+                    <button type="submit" class="suggestions-button">Отправить</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="footer">
+            <div class="left-section">
+                <div class="email">ismagilovmarsel2005@gmail.com</div>
+                <br>
+                <div class="phone">+7 (996) 107-32-60</div>
+            </div>
+            <div class="right-section">
+                <a href="https://vk.com/wiuwhh" class="vk" target="_blank">
+                    <img src="images/vk.png" alt="Вконтакте">
+                    <div>Вконтакте</div>
+                </a>
+                <a href="https://t.me/Qlsksk" class="tg" target="_blank">
+                    <img src="images/telegram.png" alt="Телеграм">
+                    <div>Телеграм</div>
+                </a>
+            </div>
+            <div class="footer-text">© 2025 ЛАПКА - Помогаем животным вместе!</div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для успешной отправки -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <p>Ваше пожелание успешно отправлено!</p>
+            <button id="okButton">ОК</button>
+        </div>
+    </div>
+
+    <script>
+        // Обработка отправки формы
+        document.getElementById('suggestionsForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Отменяем стандартную отправку формы
+    
+            // Собираем данные формы
+            const formData = new FormData(this);
+    
+            // Добавляем user_id из сессии
+            fetch('server/auth_status.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.authenticated) {
+                        formData.append('user_id', data.user_id); // Добавляем user_id
+                        sendSuggestion(formData);
+                    } else {
+                        alert('Для отправки пожелания необходимо авторизоваться.');
+                        window.location.href = 'login.html';
+                    }
+                });
+        });
+    
+        // Функция для отправки данных на сервер
+        function sendSuggestion(formData) {
+            fetch('server/add_suggestion.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка сети или сервера');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Показываем модальное окно об успешной отправке
+                    document.getElementById('successModal').style.display = 'flex';
+                } else {
+                    document.getElementById('errorMessage').textContent = data.message;
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                document.getElementById('errorMessage').textContent = 'Произошла ошибка при отправке данных.';
+                document.getElementById('errorMessage').style.display = 'block';
+            });
+        }
+    
+        // Обработка нажатия на кнопку "ОК" в модальном окне
+        document.getElementById('okButton').addEventListener('click', function () {
+            // Перенаправляем на главную страницу
+            window.location.href = 'index.html';
+        });
+    </script>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

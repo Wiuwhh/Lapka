@@ -157,12 +157,13 @@ body {
     box-shadow: 0 0 10px rgb(86, 73, 57);
 }
 
-.upper-part {
+.upper-part, .suggestions {
     text-align: center;
 }
 
 .donate-button, 
-.pets-button {
+.pets-button,
+.suggestions-button {
     display: inline-block;
     padding: 10px 20px;
     font-size: 1rem;
@@ -178,7 +179,8 @@ body {
 }
 
 .donate-button:hover, 
-.pets-button:hover {
+.pets-button:hover,
+.suggestions-button:hover {
     background-color: #786C5F;
     border-color: #786C5F;
 }
