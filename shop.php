@@ -1,15 +1,6 @@
 <?php
 // Подключение к базе данных
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "webproject";
-$conn = new mysqli($servername, $username, $password, $dbname, 3307);
-
-// Проверка подключения
-if ($conn->connect_error) {
-    die("Ошибка подключения: " . $conn->connect_error);
-}
+require_once 'server/db_connection.php';
 
 // Получаем выбранные параметры фильтрации и сортировки
 $category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
@@ -148,7 +139,7 @@ $conn->close();
         }
 
         /* Стили для модального окна */
-        .modal {
+        .modalprod {
             display: none; /* Скрыто по умолчанию */
             position: fixed;
             z-index: 1000;
@@ -160,7 +151,7 @@ $conn->close();
             background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
         }
 
-        .modal-content {
+        .modalprod-content {
             background-color: #fff;
             margin: auto; /* Центрирование по горизонтали */
             padding: 20px;
@@ -234,7 +225,7 @@ $conn->close();
         }
 
         @media (max-width: 768px) {
-        .modal-content {
+        .modalprod-content {
             width: 90%; /* Увеличиваем ширину на мобильных устройствах */
             max-width: none; /* Убираем ограничение по ширине */
         }
@@ -360,8 +351,8 @@ $conn->close();
     </div>
     
     <!-- Модальное окно для деталей товара -->
-    <div id="productModal" class="modal" style="display: none;">
-        <div class="modal-content">
+    <div id="productModal" class="modalprod" style="display: none;">
+        <div class="modalprod-content">
             <span class="close">&times;</span>
             <div class="modal-body">
                 <div class="modal-image">

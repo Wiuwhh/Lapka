@@ -4,17 +4,7 @@ header('Content-Type: application/json'); // Указываем, что возв
 session_start();
 
 // Подключение к базе данных
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "webproject";
-$conn = new mysqli($servername, $username, $password, $dbname, 3307);
-
-// Проверка подключения
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'Ошибка подключения к базе данных']);
-    exit();
-}
+require_once 'db_connection.php';
 
 // Установка кодировки
 $conn->set_charset("utf8mb4");

@@ -1,23 +1,11 @@
 <?php
-session_start();
 
 // Проверка, авторизован ли администратор
-if (!isset($_SESSION['user'])) {
-    header('Location: ../../login.html');
-    exit();
-}
+include '../check_admin.php'; // Проверка прав администратора
 
 // Подключение к базе данных
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "webproject";
-$conn = new mysqli($servername, $username, $password, $dbname, 3307);
+require_once '../db_connection.php'; // Подключение к базе данных
 
-// Проверка подключения
-if ($conn->connect_error) {
-    die("Ошибка подключения: " . $conn->connect_error);
-}
 
 // Обработка обновления статуса
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {

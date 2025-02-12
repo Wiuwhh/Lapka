@@ -8,16 +8,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
 }
 
 // Подключение к базе данных
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "webproject";
-$conn = new mysqli($servername, $username, $password, $dbname, 3307);
-
-// Проверка подключения
-if ($conn->connect_error) {
-    die("Ошибка подключения: " . $conn->connect_error);
-}
+require_once '../db_connection.php';
 
 // Если форма отправлена
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

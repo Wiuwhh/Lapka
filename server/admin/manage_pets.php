@@ -1,4 +1,7 @@
-<?php include '../check_admin.php'; ?>
+<?php
+include '../check_admin.php'; // Проверка прав администратора
+require_once '../db_connection.php'; // Подключение к базе данных
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>

@@ -1,4 +1,7 @@
-<?php include '../check_admin.php'; ?>
+<?php
+include '../check_admin.php'; // Проверка прав администратора
+require_once '../db_connection.php'; // Подключение к базе данных
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -69,7 +72,7 @@
             background-color: #786C5F;
             border-color: #786C5F;
         }
-    </style>
+        </style>
 </head>
 <body>
     <header class="header">
@@ -98,18 +101,6 @@
             </thead>
             <tbody>
                 <?php
-                // Подключение к базе данных
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "webproject";
-                $conn = new mysqli($servername, $username, $password, $dbname, 3307);
-
-                // Проверка подключения
-                if ($conn->connect_error) {
-                    die("Ошибка подключения: " . $conn->connect_error);
-                }
-
                 // Запрос на получение пользователей
                 $sql = "SELECT id, username, email, phone, role FROM users";
                 $result = $conn->query($sql);
@@ -131,8 +122,6 @@
                 } else {
                     echo "<tr><td colspan='6'>Нет данных о пользователях</td></tr>";
                 }
-
-                $conn->close();
                 ?>
             </tbody>
         </table>

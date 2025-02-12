@@ -1,4 +1,7 @@
-<?php include '../check_admin.php'; ?>
+<?php
+include '../check_admin.php'; // Проверка прав администратора
+require_once '../db_connection.php'; // Подключение к базе данных
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -79,7 +82,7 @@
             background-color: #786C5F;
             border-color: #786C5F;
         }
-    </style>
+        </style>
 </head>
 <body>
     <header class="header">
@@ -92,104 +95,80 @@
     </header>
 
     <div class="admin-container">
-    <h1>Управление товарами</h1>
+        <h1>Управление товарами</h1>
 
-    <!-- Кнопка для добавления нового товара -->
-    <button class="add-button" onclick="location.href='add_product.php'">Добавить товар</button>
+        <!-- Кнопка для добавления нового товара -->
+        <button class="add-button" onclick="location.href='add_product.php'">Добавить товар</button>
 
-    <!-- Фильтр по категории -->
-    <form method="GET" action="">
-        <label for="category">Фильтр по категории:</label>
-        <select name="category" id="category" onchange="this.form.submit()">
-            <option value="">Все категории</option>
-            <?php
-            // Подключение к базе данных
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "webproject";
-            $conn = new mysqli($servername, $username, $password, $dbname, 3307);
+        <!-- Фильтр по категории -->
+        <form method="GET" action="">
+            <label for="category">Фильтр по категории:</label>
+            <select name="category" id="category" onchange="this.form.submit()">
+                <option value="">Все категории</option>
+                <?php
+                // Запрос на получение категорий
+                $sql_categories = "SELECT id, name FROM product_categories";
+                $result_categories = $conn->query($sql_categories);
 
-            // Проверка подключения
-            if ($conn->connect_error) {
-                die("Ошибка подключения: " . $conn->connect_error);
-            }
-
-            // Запрос на получение категорий
-            $sql_categories = "SELECT id, name FROM product_categories";
-            $result_categories = $conn->query($sql_categories);
-
-            if ($result_categories->num_rows > 0) {
-                while ($row_category = $result_categories->fetch_assoc()) {
-                    $selected = (isset($_GET['category']) && $_GET['category'] == $row_category['id']) ? 'selected' : '';
-                    echo "<option value='{$row_category['id']}' $selected>{$row_category['name']}</option>";
+                if ($result_categories->num_rows > 0) {
+                    while ($row_category = $result_categories->fetch_assoc()) {
+                        $selected = (isset($_GET['category']) && $_GET['category'] == $row_category['id']) ? 'selected' : '';
+                        echo "<option value='{$row_category['id']}' $selected>{$row_category['name']}</option>";
+                    }
                 }
-            }
+                ?>
+            </select>
+        </form>
 
-            $conn->close();
-            ?>
-        </select>
-    </form>
+        <!-- Таблица с товарами -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Категория</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Запрос на получение товаров с учетом фильтра
+                $sql = "SELECT p.id, p.name, p.description, p.price, p.stock_quantity, c.name as category 
+                        FROM shop_products p 
+                        JOIN product_categories c ON p.category_id = c.id";
 
-    <!-- Таблица с товарами -->
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Описание</th>
-                <th>Цена</th>
-                <th>Количество</th>
-                <th>Категория</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            // Подключение к базе данных
-            $conn = new mysqli($servername, $username, $password, $dbname, 3307);
-
-            // Проверка подключения
-            if ($conn->connect_error) {
-                die("Ошибка подключения: " . $conn->connect_error);
-            }
-
-            // Запрос на получение товаров с учетом фильтра
-            $sql = "SELECT p.id, p.name, p.description, p.price, p.stock_quantity, c.name as category 
-                    FROM shop_products p 
-                    JOIN product_categories c ON p.category_id = c.id";
-
-            // Если выбрана категория, добавляем условие WHERE
-            if (isset($_GET['category']) && !empty($_GET['category'])) {
-                $category_id = intval($_GET['category']);
-                $sql .= " WHERE p.category_id = $category_id";
-            }
-
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>{$row['id']}</td>
-                            <td>{$row['name']}</td>
-                            <td>{$row['description']}</td>
-                            <td>{$row['price']}</td>
-                            <td>{$row['stock_quantity']}</td>
-                            <td>{$row['category']}</td>
-                            <td class='actions'>
-                                <button class='edit' onclick='location.href=\"edit_product.php?id={$row['id']}\"'>Редактировать</button>
-                                <button class='delete' onclick='deleteProduct({$row['id']})'>Удалить</button>
-                            </td>
-                        </tr>";
+                // Если выбрана категория, добавляем условие WHERE
+                if (isset($_GET['category']) && !empty($_GET['category'])) {
+                    $category_id = intval($_GET['category']);
+                    $sql .= " WHERE p.category_id = $category_id";
                 }
-            } else {
-                echo "<tr><td colspan='7'>Нет данных о товарах</td></tr>";
-            }
 
-            $conn->close();
-            ?>
-        </tbody>
-    </table>
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>{$row['id']}</td>
+                                <td>{$row['name']}</td>
+                                <td>{$row['description']}</td>
+                                <td>{$row['price']}</td>
+                                <td>{$row['stock_quantity']}</td>
+                                <td>{$row['category']}</td>
+                                <td class='actions'>
+                                    <button class='edit' onclick='location.href=\"edit_product.php?id={$row['id']}\"'>Редактировать</button>
+                                    <button class='delete' onclick='deleteProduct({$row['id']})'>Удалить</button>
+                                </td>
+                              </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='7'>Нет данных о товарах</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 
     <script>

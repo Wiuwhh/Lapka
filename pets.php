@@ -1,15 +1,6 @@
 <?php
 // Подключение к базе данных
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "webproject";
-$conn = new mysqli($servername, $username, $password, $dbname, 3307);
-
-// Проверка подключения
-if ($conn->connect_error) {
-    die("Ошибка подключения: " . $conn->connect_error);
-}
+require_once 'server/db_connection.php';
 
 // Получаем выбранную категорию
 $category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
