@@ -1,0 +1,64 @@
+CREATE DATABASE IF NOT EXISTS webproject;
+USE webproject;
+
+-- Таблица категорий питомцев
+CREATE TABLE pet_categories (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL
+);
+
+-- Таблица питомцев
+CREATE TABLE pets (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    breed VARCHAR(100) NOT NULL,
+    age INT(11),
+    description TEXT,
+    photo VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    category_id INT(11),
+    FOREIGN KEY (category_id) REFERENCES pet_categories(id) ON DELETE SET NULL
+);
+
+-- Таблица категорий товаров
+CREATE TABLE product_categories (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL
+);
+
+-- Таблица товаров в магазине
+CREATE TABLE shop_products (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    stock_quantity INT(11) NOT NULL,
+    photo_path VARCHAR(255),
+    category_id INT(11),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES product_categories(id) ON DELETE SET NULL
+);
+
+-- Таблица пользователей
+CREATE TABLE users (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone VARCHAR(20),
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    role ENUM('user', 'admin') NOT NULL DEFAULT 'user'
+);
+
+-- Таблица предложений пользователей
+CREATE TABLE user_suggestions (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    user_id INT(11),
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    status ENUM('new', 'in_progress', 'completed', 'rejected') NOT NULL DEFAULT 'new',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

@@ -27,7 +27,7 @@ if (empty($title) || empty($description)) {
 }
 
 // Вставка данных в таблицу user_suggestions
-$stmt = $conn->prepare("INSERT INTO user_suggestions (user_id, title, description, status) VALUES (?, ?, ?, 'pending')");
+$stmt = $conn->prepare("INSERT INTO user_suggestions (user_id, title, description, status) VALUES (?, ?, ?, 'new')");
 if (!$stmt) {
     echo json_encode(['success' => false, 'message' => 'Ошибка подготовки запроса: ' . $conn->error]);
     exit();

@@ -1,77 +1,96 @@
 <?php
-
 // Проверка, авторизован ли администратор
 include '../check_admin.php'; // Проверка прав администратора
 
 // Подключение к базе данных
 require_once '../db_connection.php'; // Подключение к базе данных
 
-
 // Обработка обновления статуса
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
-    if ($_GET['action'] === 'update_status') {
-        $suggestionId = $_GET['id'];
-        $status = $_GET['status'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'update_status') {
+    $suggestionId = intval($_GET['id']); // Приводим к целому числу для безопасности
+    $status = $_GET['status'];
 
-        $stmt = $conn->prepare("UPDATE user_suggestions SET status = ? WHERE id = ?");
-        $stmt->bind_param("si", $status, $suggestionId);
-
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Статус обновлён']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Ошибка при обновлении статуса']);
-        }
-
-        $stmt->close();
-        $conn->close();
+    // Проверяем, что статус допустимый
+    $allowedStatuses = ['new', 'in_progress', 'completed', 'rejected'];
+    if (!in_array($status, $allowedStatuses)) {
+        echo json_encode(['success' => false, 'message' => 'Недопустимый статус']);
         exit();
     }
+
+    // Обновляем статус
+    $stmt = $conn->prepare("UPDATE user_suggestions SET status = ? WHERE id = ?");
+    $stmt->bind_param("si", $status, $suggestionId);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Статус обновлён']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Ошибка при обновлении статуса']);
+    }
+
+    $stmt->close();
+    $conn->close();
+    exit();
 }
 
 // Обработка фильтрации и сортировки
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
-    if ($_GET['action'] === 'filter') {
-        $status = $_GET['status'] ?? 'all';
-        $sort = $_GET['sort'] ?? 'newest';
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'filter') {
+    $status = $_GET['status'] ?? 'all';
+    $sort = $_GET['sort'] ?? 'newest';
 
-        $sql = "SELECT s.id, u.username, s.title, s.description, s.created_at, s.status 
-                FROM user_suggestions s 
-                JOIN users u ON s.user_id = u.id";
+    // Базовый SQL-запрос
+    $sql = "SELECT s.id, u.username, s.title, s.description, s.created_at, s.status 
+            FROM user_suggestions s 
+            JOIN users u ON s.user_id = u.id";
 
-        if ($status !== 'all') {
-            $sql .= " WHERE s.status = '$status'";
-        }
-
-        $sql .= " ORDER BY s.created_at " . ($sort === 'newest' ? 'DESC' : 'ASC');
-
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$row['id']}</td>
-                        <td>{$row['username']}</td>
-                        <td>{$row['title']}</td>
-                        <td>{$row['description']}</td>
-                        <td>{$row['created_at']}</td>
-                        <td>{$row['status']}</td>
-                        <td class='actions'>
-                            <button class='edit' onclick='updateStatus({$row['id']}, \"in_progress\")'>В процессе</button>
-                            <button class='edit' onclick='updateStatus({$row['id']}, \"completed\")'>Завершить</button>
-                            <button class='delete' onclick='updateStatus({$row['id']}, \"rejected\")'>Отклонить</button>
-                        </td>
-                      </tr>";
-            }
-        } else {
-            echo "<tr><td colspan='7'>Нет предложений</td></tr>";
-        }
-
-        $conn->close();
-        exit();
+    // Фильтрация по статусу
+    if ($status !== 'all') {
+        $sql .= " WHERE s.status = ?";
     }
+
+    // Сортировка
+    $sql .= " ORDER BY s.created_at " . ($sort === 'newest' ? 'DESC' : 'ASC');
+
+    // Подготавливаем запрос
+    $stmt = $conn->prepare($sql);
+    if ($status !== 'all') {
+        $stmt->bind_param("s", $status);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Преобразуем статус в читаемый формат
+            $statusText = [
+                'new' => 'Новое',
+                'in_progress' => 'В процессе',
+                'completed' => 'Завершено',
+                'rejected' => 'Отклонено'
+            ][$row['status']] ?? 'Неизвестно';
+
+            echo "<tr>
+                    <td>{$row['id']}</td>
+                    <td>{$row['username']}</td>
+                    <td>{$row['title']}</td>
+                    <td>{$row['description']}</td>
+                    <td>{$row['created_at']}</td>
+                    <td>{$statusText}</td>
+                    <td class='actions'>
+                        <button class='edit' onclick='updateStatus({$row['id']}, \"in_progress\")'>В процессе</button>
+                        <button class='edit' onclick='updateStatus({$row['id']}, \"completed\")'>Завершить</button>
+                        <button class='delete' onclick='updateStatus({$row['id']}, \"rejected\")'>Отклонить</button>
+                    </td>
+                  </tr>";
+        }
+    } else {
+        echo "<tr><td colspan='7'>Нет предложений</td></tr>";
+    }
+
+    $stmt->close();
+    $conn->close();
+    exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -152,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
             border-radius: 5px;
             border: 1px solid #9F8B70;
         }
-    </style>
+</style>
 </head>
 <body>
     <header class="header">
@@ -173,10 +192,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
                 <label for="status">Статус:</label>
                 <select id="status" onchange="filterSuggestions()">
                     <option value="all">Все</option>
-                    <option value="pending">Новый</option>
+                    <option value="new">Новое</option>
                     <option value="in_progress">В процессе</option>
-                    <option value="completed">Завершенный</option>
-                    <option value="rejected">Отклоненный</option>
+                    <option value="completed">Завершено</option>
+                    <option value="rejected">Отклонено</option>
                 </select>
             </div>
             <div class="sort-filter">
@@ -212,13 +231,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
+                        // Преобразуем статус в читаемый формат
+                        $statusText = [
+                            'new' => 'Новое',
+                            'in_progress' => 'В процессе',
+                            'completed' => 'Завершено',
+                            'rejected' => 'Отклонено'
+                        ][$row['status']] ?? 'Неизвестно';
+
                         echo "<tr>
                                 <td>{$row['id']}</td>
                                 <td>{$row['username']}</td>
                                 <td>{$row['title']}</td>
                                 <td>{$row['description']}</td>
                                 <td>{$row['created_at']}</td>
-                                <td>{$row['status']}</td>
+                                <td>{$statusText}</td>
                                 <td class='actions'>
                                     <button class='edit' onclick='updateStatus({$row['id']}, \"in_progress\")'>В процессе</button>
                                     <button class='edit' onclick='updateStatus({$row['id']}, \"completed\")'>Завершить</button>
@@ -260,7 +287,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
                 .then(data => {
                     if (data.success) {
                         alert("Статус успешно обновлён");
-                        location.reload(); // Перезагружаем страницу
+                        filterSuggestions(); // Обновляем таблицу без перезагрузки страницы
                     } else {
                         alert("Ошибка при обновлении статуса: " + data.message);
                     }
