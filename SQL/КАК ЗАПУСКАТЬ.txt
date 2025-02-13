@@ -3,8 +3,7 @@
 
 
 
-2) Открыть PhpMyAdmin через http://localhost/phpmyadmin/index.php и импортировать БД (SQL скрипты закинул в папку SQL)
-
+2) Открыть PhpMyAdmin через http://localhost/phpmyadmin/index.php и импортировать БД
 
 
 3) Ну и все по сути, перейти по этой ссылке http://localhost/webproject/index.html и готово
