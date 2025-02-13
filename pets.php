@@ -53,6 +53,7 @@ $conn->close();
             padding: 15px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; /* Добавляем курсор-указатель */
         }
 
         .pet-card:hover {
@@ -110,6 +111,94 @@ $conn->close();
         .filters button:hover {
             background-color: #786C5F;
         }
+
+        /* Стили для модального окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 70%;
+            max-width: 800px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .modal-body {
+            display: flex;
+            gap: 20px;
+        }
+
+        .modal-image {
+            flex: 1;
+        }
+
+        .modal-image img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .modal-text {
+            flex: 2;
+            text-align: left;
+        }
+
+        .modal-text h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .modal-text p {
+            font-size: 1rem;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+         /* Стили для кнопки подписки */
+        .subscribe-button {
+            background-color: #9F8B70;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        .subscribe-button:hover {
+            background-color: #786C5F;
+        }
     </style>
 </head>
 <body>
@@ -162,7 +251,7 @@ $conn->close();
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo '
-                            <div class="pet-card">
+                            <div class="pet-card" data-pet=\'' . json_encode($row) . '\'>
                                 <img src="' . $row['photo'] . '" alt="' . $row['name'] . '">
                                 <div class="name-age">
                                     <h3>' . $row['name'] . ', ' . $row['age'] . '</h3>
@@ -201,6 +290,27 @@ $conn->close();
         </div>
     </footer>
 
+    <!-- Модальное окно для деталей питомца -->
+    <div id="petModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modalPetImage" src="" alt="Фото питомца">
+                </div>
+                <div class="modal-text">
+                    <h2 id="modalPetName"></h2>
+                    <p id="modalPetBreed"></p>
+                    <p id="modalPetAge"></p>
+                    <p id="modalPetDescription"></p>
+                    <p id="modalPetCategory"></p>
+                    <!-- Кнопка для оформления подписки -->
+                    <button id="subscribeButton" class="subscribe-button">Оформить подписку</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Модалка для подтверждения выхода -->
     <div class="modal" id="logout-modal" style="display: none;">
         <div class="modal-content">
@@ -209,6 +319,50 @@ $conn->close();
             <button id="cancel-logout">Нет</button>
         </div>
     </div>
+
+    <script>
+        // Функция для открытия модального окна с деталями питомца
+        function openPetModal(pet) {
+            document.getElementById('modalPetImage').src = pet.photo;
+            document.getElementById('modalPetName').innerText = pet.name;
+            document.getElementById('modalPetBreed').innerText = `Порода: ${pet.breed}`;
+            document.getElementById('modalPetAge').innerText = `Возраст: ${pet.age}`;
+            document.getElementById('modalPetDescription').innerText = pet.description;
+            document.getElementById('modalPetCategory').innerText = `Категория: ${pet.category_name}`;
+            document.getElementById('petModal').style.display = 'block';
+
+            // Добавляем обработчик для кнопки подписки
+            document.getElementById('subscribeButton').onclick = function() {
+                window.location.href = `subscribe/subscribe.php?pet_id=${pet.id}`;
+            };
+        }
+
+        // Функция для закрытия модального окна
+        function closePetModal() {
+            document.getElementById('petModal').style.display = 'none';
+        }
+
+        // Закрытие модального окна при клике на крестик
+        document.querySelector('#petModal .close').addEventListener('click', closePetModal);
+
+        // Закрытие модального окна при клике вне его
+        window.addEventListener('click', function(event) {
+            if (event.target == document.getElementById('petModal')) {
+                closePetModal();
+            }
+        });
+
+        // Обработчик клика на карточку питомца
+        document.querySelectorAll('.pet-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const petData = this.getAttribute('data-pet');
+                if (petData) {
+                    const pet = JSON.parse(petData);
+                    openPetModal(pet);
+                }
+            });
+        });
+    </script>
 
     <script src="js/auth.js"></script>
 </body>

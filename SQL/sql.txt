@@ -62,3 +62,16 @@ CREATE TABLE user_suggestions (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- Таблица подписки на питомца
+CREATE TABLE subscriptions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pet_id INT NOT NULL,
+    user_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    FOREIGN KEY (pet_id) REFERENCES pets(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

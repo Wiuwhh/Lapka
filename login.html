@@ -62,6 +62,7 @@
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
+            margin: 5px; /* Отступ между кнопками */
         }
 
         .login-button:hover,
@@ -75,6 +76,23 @@
             color: red;
             margin-bottom: 15px;
             display: none; /* По умолчанию скрыт */
+        }
+
+        /* Стили для текста "Нет аккаунта?" и ссылки */
+        .register-text {
+            margin-top: 15px;
+            color: #786C5F;
+            font-size: 14px; /* Маленький шрифт */
+        }
+
+        .register-text a {
+            color: #9F8B70; /* Цвет ссылки */
+            text-decoration: none; /* Убираем подчеркивание */
+            font-weight: bold; /* Делаем текст ссылки жирным */
+        }
+
+        .register-text a:hover {
+            text-decoration: underline; /* Подчеркивание при наведении */
         }
     </style>
 </head>
@@ -94,6 +112,11 @@
         <br><br>
         <button type="submit" class="login-button">Войти</button>
         <button type="button" onclick="window.history.back()" class="back-button">Назад</button>
+
+        <!-- Блок "Нет аккаунта?" -->
+        <div class="register-text">
+            Нет аккаунта? <a href="register.html">Создать аккаунт</a>
+        </div>
     </form>
 
     <script>
@@ -124,6 +147,6 @@
                 console.error('Ошибка:', error);
             });
         });
-    </script>
+    </script>   
 </body>
 </html>
