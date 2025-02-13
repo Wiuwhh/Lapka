@@ -333,7 +333,7 @@ $conn->close();
 
             // Добавляем обработчик для кнопки подписки
             document.getElementById('subscribeButton').onclick = function() {
-                window.location.href = `subscribe/subscribe.php?pet_id=${pet.id}`;
+                window.location.href = `server/subscribe/subscribe.php?pet_id=${pet.id}`;
             };
         }
 

@@ -1,0 +1,6 @@
+1) Я запускаю через локальный сервак (XAMPP), там вкл Apache и MySQL (!!он у меня под портом 3307, а не 3306 как по умолчанию!!)
+								     (и в файле /server/db_connection.php он подключен под этим портом)
+
+2) Открыть PhpMyAdmin через http://localhost/phpmyadmin/index.php и создать БД (SQL скрипты закинул в папку SQL, там текстовый документ)
+
+3) Ну и все по сути, перейти по этой ссылке http://localhost/webproject/index.html и готово
