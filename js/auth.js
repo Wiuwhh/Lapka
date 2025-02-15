@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('account-icon').style.display = 'block';
             document.getElementById('logout-btn').style.display = 'block';
 
+            // Отображаем ФИО пользователя
+            const userFioElement = document.getElementById('user-fio');
+            if (data.username) {
+                userFioElement.textContent = data.username; // Устанавливаем ФИО
+                userFioElement.style.display = 'inline-block'; // Показываем элемент
+            }
+
             // Если пользователь - админ, добавляем ссылку на админ-панель
             if (data.role === 'admin') {
                 const adminLink = document.createElement('a');
@@ -26,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('login-btn').style.display = 'inline-block';
             document.getElementById('account-icon').style.display = 'none';
             document.getElementById('logout-btn').style.display = 'none';
+            document.getElementById('user-fio').style.display = 'none'; // Скрываем ФИО
         }
     })
     .catch(error => console.error('Ошибка при проверке авторизации:', error));
@@ -63,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById('login-btn').style.display = 'inline-block';
                     document.getElementById('account-icon').style.display = 'none';
                     document.getElementById('logout-btn').style.display = 'none';
+                    document.getElementById('user-fio').style.display = 'none'; // Скрываем ФИО
                     logoutModal.style.display = 'none';
                     // Перенаправляем на главную страницу
                     window.location.href = 'index.html';

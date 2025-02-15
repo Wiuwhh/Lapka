@@ -1,40 +1,36 @@
 <?php
-session_start();
+session_start(); // Запускаем сессию
+require_once 'db_connection.php'; // Подключаем файл с подключением к базе данных
 
-// Подключение к базе данных
-require_once 'db_connection.php';
+$response = ['success' => false, 'message' => ''];
 
-// Установка кодировки
-$conn->set_charset("utf8mb4");
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-// Получение данных из формы
-$username = $_POST['username'];
-$password = $_POST['password'];
+    // Подготавливаем SQL-запрос
+    $sql = "SELECT id, username, password, role FROM users WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-// Запрос на получение данных пользователя
-$stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-$stmt->bind_param("s", $username);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    if (password_verify($password, $row['password'])) {
-        // Сохраняем данные пользователя в сессии
-        $_SESSION['user'] = $row;
-
-        // Проверяем роль пользователя
-        if ($row['role'] === 'admin') {
-            echo json_encode(['success' => true, 'redirect' => 'admin_panel.html']); // Перенаправляем на админ-панель
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        if (password_verify($password, $user['password'])) {
+            // Устанавливаем сессию
+            $_SESSION['user_id'] = $user['id'];
+            $response['success'] = true;
+            $response['message'] = 'Авторизация успешна!';
         } else {
-            echo json_encode(['success' => true, 'redirect' => 'index.html']); // Перенаправляем на главную страницу
+            $response['message'] = 'Неверный пароль.';
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']);
+        $response['message'] = 'Пользователь не найден.';
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Неверное имя или пароль']);
 }
 
-$conn->close();
+// Возвращаем ответ в формате JSON
+header('Content-Type: application/json');
+echo json_encode($response);
 ?>
