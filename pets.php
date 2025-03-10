@@ -113,7 +113,7 @@ $conn->close();
         }
 
         /* Стили для модального окна */
-        .modal {
+        .modalpet {
             display: none;
             position: fixed;
             z-index: 1000;
@@ -125,7 +125,7 @@ $conn->close();
             background-color: rgba(0, 0, 0, 0.5);
         }
 
-        .modal-content {
+        .modalpet-content {
             background-color: #fff;
             margin: auto;
             padding: 20px;
@@ -291,8 +291,8 @@ $conn->close();
     </footer>
 
     <!-- Модальное окно для деталей питомца -->
-    <div id="petModal" class="modal" style="display: none;">
-        <div class="modal-content">
+    <div id="petModal" class="modalpet" style="display: none;">
+        <div class="modalpet-content">
             <span class="close">&times;</span>
             <div class="modal-body">
                 <div class="modal-image">
