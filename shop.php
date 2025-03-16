@@ -61,6 +61,7 @@ $conn->close();
             padding: 15px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
 
         .product-card:hover {
@@ -91,20 +92,6 @@ $conn->close();
             font-weight: bold;
             color: #9F8B70;
             margin-bottom: 15px;
-        }
-
-        .product-card button {
-            padding: 10px 20px;
-            background-color: #9F8B70;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .product-card button:hover {
-            background-color: #786C5F;
         }
 
         /* Стили для фильтров и сортировки */
@@ -246,6 +233,32 @@ $conn->close();
             text-align: center; /* Центрируем текст */
         }
     }
+
+        /* Стили для плавающей кнопки корзины */
+        .floating-cart-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color:rgb(255, 255, 255);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .floating-cart-button:hover {
+            background-color: #786C5F;
+        }
     </style>
 </head>
 <body>
@@ -266,7 +279,7 @@ $conn->close();
         <nav class="nav">
             <a href="about.html" class="nav-link">О нас</a>
             <a href="donate.html" class="nav-link">Помощь</a>
-            <a href="#" class="nav-use">Магазин</a>
+            <a href="shop.php" class="nav-link">Магазин</a>
             <a href="pets.php" class="nav-link">Наши животные</a>
         </nav>
         <main class="main">
@@ -363,64 +376,112 @@ $conn->close();
                     <p id="modalDescription"></p>
                     <p id="modalPrice"></p>
                     <p id="modalCategory"></p>
-                    <!-- 
-                    <button onclick="addToCart()">Добавить в корзину</button>
-                     -->
+                    <button onclick="addToCart(currentProduct)">Добавить в корзину</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Плавающая кнопка корзины -->
+    <a href="cart.php" id="floating-cart-button" class="floating-cart-button">🛒</a>
+
     <script src="js/auth.js"></script>
+
     <script>
-        // Функция для открытия модального окна с деталями товара
-        function openModal(product) {
-            document.getElementById('modalImage').src = product.photo_path;
-            document.getElementById('modalTitle').innerText = product.name;
-            document.getElementById('modalDescription').innerText = product.description;
-            document.getElementById('modalPrice').innerText = `Цена: ${parseFloat(product.price).toFixed(2)} руб.`;
-            document.getElementById('modalCategory').innerText = `Категория: ${product.category_name}`;
-            document.getElementById('productModal').style.display = 'block';
-        }
+    let currentProduct = null; // Глобальная переменная для хранения данных о товаре
 
-        // Функция для закрытия модального окна
-        function closeModal() {
-            document.getElementById('productModal').style.display = 'none';
-        }
-
-        // Закрытие модального окна при клике на крестик
-        document.querySelector('.close').addEventListener('click', closeModal);
-
-        // Закрытие модального окна при клике вне его
-        window.addEventListener('click', function(event) {
-            if (event.target == document.getElementById('productModal')) {
-                closeModal();
+    // Функция для обновления счетчика товаров в корзине
+    function updateCartCount() {
+        fetch('server/get_cart_count.php', {
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('cart-count').textContent = data.count;
+            } else {
+                console.error('Ошибка при обновлении счетчика:', data.message);
             }
-        });
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
 
-        // Обработчик клика на карточку товара
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const productData = this.getAttribute('data-product');
-                if (productData) {
-                    const product = JSON.parse(productData);
-                    openModal(product);
-                }
-            });
-        });
+    // Обработчик для плавающей кнопки корзины
+    document.getElementById('floating-cart-button').addEventListener('click', function() {
+        window.location.href = 'cart.php'; // Перенаправляем на страницу корзины
+    });
 
-        // Функция для добавления товара в корзину (заглушка)
-        /*
-        function addToCart() {
-            alert('Товар добавлен в корзину!');
+    // Обновляем счетчик при загрузке страницы
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+
+    // Функция для открытия модального окна с деталями товара
+    function openModal(product) {
+        currentProduct = product; // Сохраняем данные о товаре
+        document.getElementById('modalImage').src = product.photo_path;
+        document.getElementById('modalTitle').innerText = product.name;
+        document.getElementById('modalDescription').innerText = product.description;
+        document.getElementById('modalPrice').innerText = `Цена: ${parseFloat(product.price).toFixed(2)} руб.`;
+        document.getElementById('modalCategory').innerText = `Категория: ${product.category_name}`;
+        document.getElementById('productModal').style.display = 'block';
+    }
+
+    // Функция для закрытия модального окна товара
+    function closeModal() {
+        document.getElementById('productModal').style.display = 'none';
+    }
+
+    // Закрытие модального окна при клике на крестик
+    document.querySelector('#productModal .close').addEventListener('click', closeModal);
+
+    // Закрытие модального окна при клике вне его
+    window.addEventListener('click', function(event) {
+        if (event.target == document.getElementById('productModal')) {
             closeModal();
         }
-        */
-    </script>
+    });
+
+    // Обработчик клика на карточку товара
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const productData = this.getAttribute('data-product');
+            if (productData) {
+                const product = JSON.parse(productData);
+                openModal(product);
+            }
+        });
+    });
+
+    // Функция для добавления товара в корзину
+    function addToCart(product) {
+        if (!product) {
+            alert('Ошибка: данные о товаре отсутствуют.');
+            return;
+        }
+
+        fetch('server/cart/add_to_cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                product_id: product.id, // ID товара
+                quantity: 1 // По умолчанию добавляем 1 единицу товара
+            }),
+            credentials: 'include' // Передаем cookies для авторизации
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Товар добавлен в корзину!');
+                closeModal(); // Закрываем модальное окно товара
+                updateCartCount(); // Обновляем счетчик товаров в корзине
+            } else {
+                alert('Ошибка: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+</script>
+
 </body>
 </html>
-
-
-
-        
-
