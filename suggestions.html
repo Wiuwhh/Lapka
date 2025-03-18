@@ -226,37 +226,58 @@
         // Обработка отправки формы
         document.getElementById('suggestionsForm').addEventListener('submit', function (e) {
             e.preventDefault(); // Отменяем стандартную отправку формы
-    
-            // Собираем данные формы
-            const formData = new FormData(this);
-    
-            // Добавляем user_id из сессии
+
+            console.log("Форма отправлена. Проверка авторизации...");
+
+            // Проверка авторизации
             fetch('server/auth_status.php')
-                .then(response => response.json())
+                .then(response => {
+                    console.log("Ответ от auth_status.php получен.");
+                    return response.json();
+                })
                 .then(data => {
+                    console.log("Данные авторизации:", data);
+
                     if (data.authenticated) {
-                        formData.append('user_id', data.user_id); // Добавляем user_id
+                        console.log("Пользователь авторизован. User ID:", data.user_id);
+
+                        // Собираем данные формы
+                        const formData = new FormData(this);
+
+                        // Добавляем user_id в FormData
+                        formData.append('user_id', data.user_id);
+
+                        // Отправляем данные на сервер
                         sendSuggestion(formData);
                     } else {
+                        console.log("Пользователь не авторизован. Перенаправление на страницу входа.");
                         alert('Для отправки пожелания необходимо авторизоваться.');
                         window.location.href = 'login.html';
                     }
+                })
+                .catch(error => {
+                    console.error("Ошибка при проверке авторизации:", error);
                 });
         });
-    
+
         // Функция для отправки данных на сервер
         function sendSuggestion(formData) {
+            console.log("Отправка данных на сервер...");
+
             fetch('server/add_suggestion.php', {
                 method: 'POST',
                 body: formData
             })
             .then(response => {
+                console.log("Ответ от add_suggestion.php получен.");
                 if (!response.ok) {
                     throw new Error('Ошибка сети или сервера');
                 }
                 return response.json();
             })
             .then(data => {
+                console.log("Данные от сервера:", data);
+
                 if (data.success) {
                     // Показываем модальное окно об успешной отправке
                     document.getElementById('successModal').style.display = 'flex';
@@ -271,7 +292,7 @@
                 document.getElementById('errorMessage').style.display = 'block';
             });
         }
-    
+
         // Обработка нажатия на кнопку "ОК" в модальном окне
         document.getElementById('okButton').addEventListener('click', function () {
             // Перенаправляем на главную страницу

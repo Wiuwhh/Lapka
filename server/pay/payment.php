@@ -99,19 +99,55 @@ $conn->close();
         </div>
         <form id="payment-form" action="process_payment.php" method="POST">
             <label for="card-number">Номер карты</label>
-            <input type="text" id="card-number" name="card_number" placeholder="0000 0000 0000 0000" required>
+            <input type="text" id="card-number" name="card_number" placeholder="0000 0000 0000 0000" maxlength="19" required>
 
             <label for="card-holder">Имя владельца</label>
             <input type="text" id="card-holder" name="card_holder" placeholder="IVAN IVANOV" required>
 
             <label for="expiry-date">Срок действия</label>
-            <input type="text" id="expiry-date" name="expiry_date" placeholder="MM/YY" required>
+            <input type="text" id="expiry-date" name="expiry_date" placeholder="MM/YY" maxlength="5" required>
 
             <label for="cvv">CVV</label>
-            <input type="text" id="cvv" name="cvv" placeholder="123" required>
+            <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3" required>
 
             <button type="submit">Оплатить</button>
         </form>
     </div>
+
+    <script>
+        // Форматирование номера карты
+        document.getElementById('card-number').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            if (value.length > 16) {
+                value = value.slice(0, 16); // Ограничиваем до 16 цифр
+            }
+            let formattedValue = value.match(/.{1,4}/g);
+            if (formattedValue !== null) {
+                e.target.value = formattedValue.join(' ');
+            }
+        });
+
+        // Форматирование срока действия
+        document.getElementById('expiry-date').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value.length > 4) {
+                value = value.slice(0, 4); // Ограничиваем до 4 цифр
+            }
+            if (value.length > 2) {
+                e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            } else {
+                e.target.value = value;
+            }
+        });
+
+        // Ограничение для CVV
+        document.getElementById('cvv').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            if (value.length > 3) {
+                value = value.slice(0, 3); // Ограничиваем до 3 цифр
+            }
+            e.target.value = value;
+        });
+    </script>
 </body>
 </html>
