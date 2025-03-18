@@ -1,15 +1,6 @@
 <?php
 session_start();
-
-// Проверяем, авторизован ли пользователь
-if (!isset($_SESSION['user'])) {
-    header('Location: /login.html'); // Перенаправление на страницу входа
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: /login.html');
     exit;
 }
-
-// Проверяем, является ли пользователь администратором
-if ($_SESSION['user']['role'] !== 'admin') {
-    header('Location: /login.html'); // Перенаправление на страницу входа
-    exit;
-}
-?>

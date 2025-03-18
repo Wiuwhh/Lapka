@@ -234,31 +234,55 @@ $conn->close();
         }
     }
 
-        /* Стили для плавающей кнопки корзины */
-        .floating-cart-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color:rgb(255, 255, 255);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
-            z-index: 1000;
-            text-decoration: none;
-        }
+    /* Стили для плавающей кнопки корзины */
+    #floating-cart-button {
+        position: fixed;
+        bottom: 20px; /* Кнопка корзины остается внизу */
+        right: 20px;
+        background-color: rgb(255, 255, 255);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+        z-index: 1000;
+        text-decoration: none;
+    }
 
-        .floating-cart-button:hover {
-            background-color: #786C5F;
-        }
+    /* Стили для плавающей кнопки "Мои заказы" */
+    #floating-orders-button {
+        position: fixed;
+        bottom: 90px; /* Сдвигаем кнопку "Мои заказы" выше */
+        right: 20px; /* Та же позиция по горизонтали */
+        background-color:rgb(255, 255, 255); /* Цвет кнопки */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+        z-index: 1000;
+        text-decoration: none;
+    }
+
+    /* Общие стили для обеих кнопок */
+    #floating-cart-button:hover,
+    #floating-orders-button:hover {
+        background-color: #786C5F; /* Цвет при наведении */
+    }
     </style>
 </head>
 <body>
@@ -384,6 +408,12 @@ $conn->close();
 
     <!-- Плавающая кнопка корзины -->
     <a href="cart.php" id="floating-cart-button" class="floating-cart-button">🛒</a>
+
+    <!-- Плавающая кнопка заказов -->
+    <a href="orders.php" id="floating-orders-button" class="floating-cart-button">📦</a>
+
+
+
 
     <script src="js/auth.js"></script>
 

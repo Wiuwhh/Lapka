@@ -52,6 +52,32 @@ $conn->close();
         .cart-total { text-align: right; font-size: 1.2rem; font-weight: bold; margin-top: 20px; }
         .checkout-button { width: 100%; padding: 10px; background-color: #9F8B70; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
         .checkout-button:hover { background-color: #786C5F; }
+
+            /* Стили для плавающей кнопки "Мои заказы" */
+    #floating-orders-button {
+        position: fixed;
+        bottom: 20px; /* Кнопка корзины остается внизу */
+        right: 20px;
+        background-color: rgb(255, 255, 255);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+        z-index: 1000;
+        text-decoration: none;
+    }
+
+    #floating-orders-button:hover {
+        background-color: #786C5F; /* Цвет при наведении */
+    }
     </style>
 </head>
 <body>
@@ -98,7 +124,7 @@ $conn->close();
                         <div class="cart-total">
                             <p>Общая сумма: <?= number_format($total_amount, 2) ?> руб.</p>
                         </div>
-                        <button id="checkout-button" class="checkout-button">Оформить заказ</button>
+                        <button id="checkout-button" class="checkout-button" onclick="window.location.href='server/pay/payment.php'">Оформить заказ</button>
                     <?php endif; ?>
                 </div>
             </div>
@@ -124,6 +150,20 @@ $conn->close();
             <div class="footer-text">© 2025 ЛАПКА - Помогаем животным вместе!</div>
         </div>
     </footer>
+
+        <!-- Модалка для подтверждения выхода -->
+        <div class="modal" id="logout-modal">
+            <div class="modal-content">
+                <p>Вы уверены, что хотите выйти из аккаунта?</p>
+                <button id="confirm-logout">Да</button>
+                <button id="cancel-logout">Нет</button>
+            </div>
+        </div>
+
+    <!-- Плавающая кнопка заказов -->
+    <a href="orders.php" id="floating-orders-button" class="floating-cart-button">📦</a>
+
+    <script src="js/auth.js"></script>
 
     <script>
         function removeFromCart(cartId) {

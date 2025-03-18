@@ -1,7 +1,6 @@
 <?php
+session_start(); // Инициализация сессии (должно быть в самом начале)
 header('Content-Type: application/json'); // Указываем, что возвращаем JSON
-
-session_start();
 
 // Подключение к базе данных
 require_once 'db_connection.php';
@@ -11,14 +10,15 @@ $conn->set_charset("utf8mb4");
 
 // Проверка, авторизован ли пользователь
 if (!isset($_SESSION['user'])) {
+    error_log("Пользователь не авторизован. Сессия: " . print_r($_SESSION, true));
     echo json_encode(['success' => false, 'message' => 'Пользователь не авторизован']);
     exit();
 }
 
 // Получение данных из формы
 $user_id = $_SESSION['user']['id']; // Используем ID из сессии
-$title = isset($_POST['title']) ? $_POST['title'] : '';
-$description = isset($_POST['description']) ? $_POST['description'] : '';
+$title = isset($_POST['title']) ? trim($_POST['title']) : '';
+$description = isset($_POST['description']) ? trim($_POST['description']) : '';
 
 // Проверка на пустые данные
 if (empty($title) || empty($description)) {
