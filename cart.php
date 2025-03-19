@@ -50,6 +50,7 @@ $conn->close();
         .quantity-controls button { background-color: #9F8B70; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer; }
         .quantity-controls button:hover { background-color: #786C5F; }
         .cart-total { text-align: right; font-size: 1.2rem; font-weight: bold; margin-top: 20px; }
+        .no-cart { text-align: center; font-size: 1.1rem; color: #666; }
         .checkout-button { width: 100%; padding: 10px; background-color: #9F8B70; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; margin-top: 20px; }
         .checkout-button:hover { background-color: #786C5F; }
 
@@ -106,7 +107,7 @@ $conn->close();
                 <h1 class="h1-title-page">Корзина</h1>
                 <div class="cart-items">
                     <?php if (empty($cart_items)): ?>
-                        <p>Ваша корзина пуста.</p>
+                        <p class="no-cart">Ваша корзина пуста.</p>
                     <?php else: ?>
                         <?php foreach ($cart_items as $item): ?>
                             <div class="cart-item">

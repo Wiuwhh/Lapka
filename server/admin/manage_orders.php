@@ -2,10 +2,15 @@
 include '../check_admin.php'; // Проверка прав администратора
 require_once '../db_connection.php'; // Подключение к базе данных
 
+// Включение отладки
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Обработка изменения статуса заказа
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'], $_POST['status'])) {
     $order_id = intval($_POST['order_id']);
-    $status = $_POST['status'];
+    $status = $_POST['status']; // Новые значения: оплачено, получено, отменено
 
     // Обновляем статус заказа
     $sql = "UPDATE orders SET status = ? WHERE id = ?";
@@ -184,9 +189,9 @@ $conn->close();
                                 <form class="status-form" method="POST">
                                     <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
                                     <select name="status">
-                                        <option value="pending" <?= $order['status'] === 'pending' ? 'selected' : '' ?>>В обработке</option>
-                                        <option value="completed" <?= $order['status'] === 'completed' ? 'selected' : '' ?>>Завершен</option>
-                                        <option value="cancelled" <?= $order['status'] === 'cancelled' ? 'selected' : '' ?>>Отменен</option>
+                                        <option value="оплачено" <?= $order['status'] === 'оплачено' ? 'selected' : '' ?>>Оплачено</option>
+                                        <option value="получено" <?= $order['status'] === 'получено' ? 'selected' : '' ?>>Получено</option>
+                                        <option value="отменено" <?= $order['status'] === 'отменено' ? 'selected' : '' ?>>Отменено</option>
                                     </select>
                                     <button type="submit">Обновить</button>
                                 </form>

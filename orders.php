@@ -2,6 +2,12 @@
 session_start();
 require_once 'server/db_connection.php';
 
+// Включение отладки
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Проверка авторизации
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.html');
     exit;
@@ -10,7 +16,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Получаем список заказов пользователя
-$sql = "SELECT id, total_amount, created_at 
+$sql = "SELECT id, total_amount, status, created_at 
         FROM orders 
         WHERE user_id = ? 
         ORDER BY created_at DESC";
@@ -51,30 +57,35 @@ $conn->close();
         .order-item p { margin: 0; font-size: 0.9rem; color: #666; }
         .no-orders { text-align: center; font-size: 1.1rem; color: #666; }
 
-            /* Стили для плавающей кнопки корзины */
-    #floating-cart-button {
-        position: fixed;
-        bottom: 20px; /* Кнопка корзины остается внизу */
-        right: 20px;
-        background-color: rgb(255, 255, 255);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        font-size: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: background-color 0.3s ease;
-        z-index: 1000;
-        text-decoration: none;
-    }
-    #floating-cart-button:hover{
-        background-color: #786C5F; /* Цвет при наведении */
-    }
+        /* Стили для статусов */
+        .status-оплачено { color: orange; font-weight: bold; }
+        .status-получено { color: green; font-weight: bold; }
+        .status-отменено { color: red; font-weight: bold; }
+
+        /* Стили для плавающей кнопки корзины */
+        #floating-cart-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgb(255, 255, 255);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+        }
+        #floating-cart-button:hover {
+            background-color: #786C5F;
+        }
     </style>
 </head>
 <body>
@@ -110,6 +121,11 @@ $conn->close();
                                 <div class="order-header">
                                     <h3>Заказ #<?= $order['id'] ?></h3>
                                     <p>Дата: <?= date('d.m.Y H:i', strtotime($order['created_at'])) ?></p>
+                                    <p>Статус: 
+                                        <span class="status-<?= $order['status'] ?>">
+                                            <?= $order['status'] ?>
+                                        </span>
+                                    </p>
                                 </div>
                                 <div class="order-items">
                                     <?php
@@ -169,20 +185,18 @@ $conn->close();
         </div>
     </footer>
 
-        <!-- Модалка для подтверждения выхода -->
-        <div class="modal" id="logout-modal">
-            <div class="modal-content">
-                <p>Вы уверены, что хотите выйти из аккаунта?</p>
-                <button id="confirm-logout">Да</button>
-                <button id="cancel-logout">Нет</button>
-            </div>
+    <!-- Модалка для подтверждения выхода -->
+    <div class="modal" id="logout-modal">
+        <div class="modal-content">
+            <p>Вы уверены, что хотите выйти из аккаунта?</p>
+            <button id="confirm-logout">Да</button>
+            <button id="cancel-logout">Нет</button>
         </div>
+    </div>
         
     <!-- Плавающая кнопка корзины -->
     <a href="cart.php" id="floating-cart-button" class="floating-cart-button">🛒</a>
 
     <script src="js/auth.js"></script>
-
-                        
 </body>
 </html>

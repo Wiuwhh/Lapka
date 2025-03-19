@@ -1,11 +1,7 @@
 <?php
-session_start();
 
-// Проверка, является ли пользователь администратором
-if (!isset($_SESSION['user'])) {
-    header("Location: ../../login.html"); // Перенаправление на страницу входа
-    exit;
-}
+// Проверка прав администратора
+include '../check_admin.php'; 
 
 // Подключение к базе данных
 require_once '../db_connection.php';

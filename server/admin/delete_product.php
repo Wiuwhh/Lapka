@@ -1,10 +1,7 @@
 <?php
-session_start();
 
-// Проверка, является ли пользователь администратором
-if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
-    die(json_encode(['success' => false, 'message' => 'Доступ запрещён']));
-}
+// Проверка прав администратора
+include '../check_admin.php'; 
 
 // Подключение к базе данных
 require_once '../db_connection.php';
