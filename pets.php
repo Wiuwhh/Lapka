@@ -1,5 +1,5 @@
 <?php
-// Подключение к базе данных
+session_start();
 require_once 'server/db_connection.php';
 
 // Получаем выбранную категорию
@@ -184,20 +184,46 @@ $conn->close();
             cursor: pointer;
         }
 
-         /* Стили для кнопки подписки */
+        /* Стили для кнопки подписки */
         .subscribe-button {
-            background-color: #9F8B70;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-top: 20px;
+        background-color: #9F8B70;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 20px;
         }
 
         .subscribe-button:hover {
             background-color: #786C5F;
+        }
+
+        /* Стили для плавающей кнопки подписок */
+        #floating-subscriptions-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgb(255, 255, 255);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        #floating-subscriptions-button:hover {
+            background-color: #786C5F; /* Цвет при наведении */
         }
     </style>
 </head>
@@ -290,6 +316,11 @@ $conn->close();
         </div>
     </footer>
 
+    <!-- Плавающая кнопка для отслеживания подписок -->
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <a href="my_subscriptions.php" id="floating-subscriptions-button" class="floating-cart-button">📋</a>
+    <?php endif; ?>
+
     <!-- Модальное окно для деталей питомца -->
     <div id="petModal" class="modalpet" style="display: none;">
         <div class="modalpet-content">
@@ -305,7 +336,9 @@ $conn->close();
                     <p id="modalPetDescription"></p>
                     <p id="modalPetCategory"></p>
                     <!-- Кнопка для оформления подписки -->
-                    <button id="subscribeButton" class="subscribe-button">Оформить подписку</button>
+                    <?php if (isset($_SESSION['user_id'])): ?> 
+                        <button id="subscribeButton" class="subscribe-button">Оформить подписку (99 руб/мес)</button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -333,7 +366,7 @@ $conn->close();
 
             // Добавляем обработчик для кнопки подписки
             document.getElementById('subscribeButton').onclick = function() {
-                window.location.href = `server/subscribe/subscribe.php?pet_id=${pet.id}`;
+                window.location.href = `server/subscribe/subscription_payment.php?pet_id=${pet.id}`;
             };
         }
 

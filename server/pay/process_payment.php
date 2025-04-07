@@ -16,7 +16,7 @@ $expiry_date = $_POST['expiry_date'];
 $cvv = $_POST['cvv'];
 
 // Получаем товары из корзины
-$sql = "SELECT c.product_id, c.quantity, p.price 
+$sql = "SELECT c.product_id, c.quantity, p.price, p.stock_quantity 
         FROM cart c 
         JOIN shop_products p ON c.product_id = p.id 
         WHERE c.user_id = ?";
@@ -29,12 +29,19 @@ $cart_items = [];
 $total_amount = 0;
 
 while ($row = $result->fetch_assoc()) {
+    // Проверяем, есть ли достаточное количество товара
+    if ($row['stock_quantity'] < $row['quantity']) {
+        // Если товара недостаточно, перенаправляем с ошибкой
+        $_SESSION['error'] = "Недостаточно товара '{$row['name']}' в наличии. Доступно: {$row['stock_quantity']}";
+        header('Location: /cart.php');
+        exit;
+    }
     $cart_items[] = $row;
     $total_amount += $row['price'] * $row['quantity'];
 }
 
 if (empty($cart_items)) {
-    header('Location: /cart.php');
+    header('Location: /server/subscribe/subscription_payment.php');
     exit;
 }
 
@@ -48,12 +55,19 @@ try {
     $order_stmt->execute();
     $order_id = $conn->insert_id;
 
-    // Добавляем товары в заказ
+    // Добавляем товары в заказ и уменьшаем их количество
     foreach ($cart_items as $item) {
+        // Добавляем товар в заказ
         $order_item_sql = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
         $order_item_stmt = $conn->prepare($order_item_sql);
         $order_item_stmt->bind_param("iiid", $order_id, $item['product_id'], $item['quantity'], $item['price']);
         $order_item_stmt->execute();
+        
+        // Уменьшаем количество товара на складе
+        $update_stock_sql = "UPDATE shop_products SET stock_quantity = stock_quantity - ? WHERE id = ?";
+        $update_stmt = $conn->prepare($update_stock_sql);
+        $update_stmt->bind_param("ii", $item['quantity'], $item['product_id']);
+        $update_stmt->execute();
     }
 
     // Очищаем корзину
@@ -100,7 +114,7 @@ try {
         </div>
         <script>
             setTimeout(function() {
-                window.location.href = 'order.php'; // Исправленный путь
+                window.location.href = '/webproject/orders.php';
             }, 5000);
         </script>
     </body>
@@ -108,5 +122,9 @@ try {
     exit;
 } catch (Exception $e) {
     $conn->rollback();
-   exit;
+    // Логируем ошибку и выводим сообщение пользователю
+    error_log("Ошибка при оформлении заказа: " . $e->getMessage());
+    $_SESSION['error'] = "Произошла ошибка при оформлении заказа. Пожалуйста, попробуйте позже.";
+    header('Location: /cart.php');
+    exit;
 }
