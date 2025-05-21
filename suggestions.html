@@ -74,19 +74,31 @@
             text-align: left;
         }
 
-        #suggestionsForm input,
+         #suggestionsForm input,
         #suggestionsForm textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 2px solid #9F8B70 !important; /* Жестко фиксируем границу */
             border-radius: 5px;
             font-family: 'Comfortaa', sans-serif;
+            background-color: #fff !important;
+            box-sizing: border-box;
+            -webkit-appearance: none; /* Убираем стилизацию браузера */
+            appearance: none;
+        }
+
+        #suggestionsForm input:focus,
+        #suggestionsForm textarea:focus {
+            border-color: #786C5F; /* Цвет границы при фокусе */
+            background-color: #fff; /* Фон не меняется */
         }
 
         #suggestionsForm textarea {
             resize: vertical;
             height: 100px;
+            min-height: 100px;
+            max-height: 300px;
         }
 
         #suggestionsForm button {
@@ -126,7 +138,24 @@
             align-items: center;
             z-index: 1000;
         }
-
+         #suggestionsForm input:hover,
+        #suggestionsForm textarea:hover,
+        #suggestionsForm input:focus,
+        #suggestionsForm textarea:focus,
+        #suggestionsForm input:active,
+        #suggestionsForm textarea:active {
+            border: 2px solid #9F8B70 !important;
+            background-color: #fff !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        #description {
+            resize: none !important; /* Полное отключение изменения размера */
+            height: 100px !important; /* Фиксированная высота */
+            min-height: 100px !important;
+            max-height: 100px !important;
+            overflow-y: auto; /* Добавляем скролл при переполнении */
+        }
         .modal-content {
             background-color: white;
             padding: 20px;

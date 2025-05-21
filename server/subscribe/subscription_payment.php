@@ -88,6 +88,53 @@ $conn->close();
         .payment-container button:hover {
             background-color: #218838;
         }
+        #card-number,
+    #card-holder,
+    #expiry-date,
+    #cvv {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        color: #333;
+        box-sizing: border-box;
+        -webkit-appearance: none;
+        appearance: none;
+        resize: none;
+        outline: none;
+        transition: none;
+        box-shadow: none;
+    }
+
+    /* Отключаем все состояния */
+    #card-number:hover,
+    #card-holder:hover,
+    #expiry-date:hover,
+    #cvv:hover,
+    #card-number:focus,
+    #card-holder:focus,
+    #expiry-date:focus,
+    #cvv:focus,
+    #card-number:active,
+    #card-holder:active,
+    #expiry-date:active,
+    #cvv:active {
+        background-color: #fff !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* Специфичные стили для отдельных полей */
+    #expiry-date {
+        letter-spacing: 1px;
+    }
+
+    #cvv {
+        width: 80px;
+    }
     </style>
 </head>
 <body>

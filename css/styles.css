@@ -5,7 +5,7 @@ body {
     font-style: normal;
     margin: 1% 9%;
     padding: 0;
-    background-color: #ddd1ad;
+    background-color: #816c2d;
 }
 
 
@@ -370,10 +370,6 @@ p {
 
 
 
-
-
-
-
                                                             /* Адаптивность */
 @media (max-width: 768px) {
     body {
@@ -542,3 +538,6 @@ p {
         font-size: 0.9rem; /* Уменьшаем размер текста */
     }
 }
+
+
+
